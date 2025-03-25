@@ -39,7 +39,7 @@ namespace Lab_6
                 if (scores == null) return;
                 int[] s = new int[scores.Length +1];
 
-                for(int i = 0; i < scores.Length; i ++)
+                for(int i = 0; i < s.Length -1; i ++)
                 {
                     s[i] = scores[i];
                 }
@@ -59,27 +59,27 @@ namespace Lab_6
         public struct Group
         {
             private string name;
-            private Team[] teams;
+            private Team[] _teams;
             private int teamcount;
 
             public string Name => name;
-            public Team[] Teams => teams;
+            public Team[] Teams => _teams;
 
             public Group(string name)
             {
                 this.name = name;
-                teams = new Team[12]; // максимально команд
+                _teams = new Team[12]; // максимально команд
                 teamcount = 0;
 
             }
 
             public void Add(Team team)
             {
-                if(teams == null) return;
+                if(_teams == null) return;
 
                 if (teamcount < 12)
                 {
-                    teams[teamcount] = team;
+                    _teams[teamcount] = team;
                     teamcount++;
                 }
                 
@@ -87,28 +87,29 @@ namespace Lab_6
 
             public void Add(Team[] newTeams)
             {
-                if (teams == null) return;
+                if (_teams == null) return;
                 if(newTeams == null) return;
                 if (newTeams.Length == 0) return;
-                
 
-                foreach (var team in newTeams)
+
+                int c = 0;
+                while (teamcount < _teams.Length && c < newTeams.Length)
                 {
-                    Add(team);
+                    _teams[teamcount++] = newTeams[c++];
                 }
             }
 
             public void Sort()
             {
-                if(teams.Length == 0 || teams == null) return;
+                if(_teams.Length == 0 || _teams == null) return;
 
-                for (int i = 0; i < teams.Length; i++)
+                for (int i = 0; i < _teams.Length; i++)
                 {
-                    for (int j = 0; j < teams.Length - 1 - i; j++)
+                    for (int j = 0; j < _teams.Length - 1 - i; j++)
                     {
-                        if (teams[j].TotalScore < teams[j + 1].TotalScore)
+                        if (_teams[j].TotalScore < _teams[j + 1].TotalScore)
                         {
-                            (teams[j], teams[j + 1]) = (teams[j + 1], teams[j]);
+                            (_teams[j], _teams[j + 1]) = (_teams[j + 1], _teams[j]);
                         }
                     }
                 }
@@ -117,17 +118,22 @@ namespace Lab_6
             public static Group Merge(Group group1, Group group2, int size)
             {
                 Group finalists = new Group("Финалисты");
-                int count = 0;
+                int l = size / 2;
+                int i = 0, j = 0;
 
-                for (int i = 0; i < Math.Min(size, group1.teamcount); i++)
+                
+                while (i < l || j < l)
                 {
-                    finalists.Add(group1.teams[i]);
-                    count++;
-                }
-
-                for (int i = 0; i < Math.Min(size - count, group2.teamcount); i++)
-                {
-                    finalists.Add(group2.teams[i]);
+                    if (i < l && (j >= l || group1.Teams[i].TotalScore >= group2.Teams[j].TotalScore))
+                    {
+                        finalists.Add(group1.Teams[i]);
+                        i++;
+                    }
+                    else if (j < l)
+                    {
+                        finalists.Add(group2.Teams[j]);
+                        j++;
+                    }
                 }
 
                 return finalists;
@@ -138,7 +144,7 @@ namespace Lab_6
                 Console.WriteLine($"группа: {name}");
                 for (int i = 0; i < teamcount; i++)
                 {
-                    teams[i].Print();
+                    _teams[i].Print();
                 }
             }
         }

@@ -63,26 +63,26 @@ namespace Lab_6
 
             public void Jump(int[] result)
             {
-                if (marks == null || result == null || result.Length == 0) return;
+                if (marks == null || result == null || result.Length == 0 || marks.GetLength(0) == 0) return;
+                
                 for (int i = 0; i < 2; i++)
-                {
+                { 
+                    
                     if (marks[i, 0] == 0)
                     {
                         for (int j = 0; j < 5; j++)
                         {
                             marks[i, j] = result[j];
                         }
-                        break;
-
+                        return;
                     }
+                   
                 }
+               
             }
 
 
-            public void Print()
-            {
-                Console.WriteLine($"мя: {Name} {Surname}. общий балл: {TotalScore}");
-            }
+            
 
             public static void Sort(Participant[] array)
             {
@@ -90,6 +90,11 @@ namespace Lab_6
                 if(array.Length == 0) return;
 
                 Array.Sort(array, (x, y) => y.TotalScore.CompareTo(x.TotalScore));
+            }
+
+            public void Print()
+            {
+                Console.WriteLine($"мя: {Name} {Surname}. общий балл: {TotalScore}");
             }
         }
     }

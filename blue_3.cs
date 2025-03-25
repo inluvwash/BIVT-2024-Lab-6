@@ -9,7 +9,7 @@ namespace Lab_6
 {
     public class Blue_3
     {
-        public struct Participants
+        public struct Participant
         {
             private string name;
             private string surname;
@@ -37,8 +37,9 @@ namespace Lab_6
             {
                 get
                 {
-                    int total = 0;
+                    
                     if (penaltyTimes == null || penaltyTimes.Length == 0) return 0;
+                    int total = 0;
                     foreach (var time in penaltyTimes)
                     {
                         total += time;
@@ -60,7 +61,7 @@ namespace Lab_6
                 }
             }
 
-            public Participants(string name, string surname)
+            public Participant(string name, string surname)
             {
                 this.name = name;
                 this.surname = surname;
@@ -80,12 +81,9 @@ namespace Lab_6
                 penaltyTimes = pepenalties;
             }
 
-            public void Print()
-            {
-                Console.WriteLine($"имя: {name}, фамилия: {surname}, штрафные минуты: {TotalTime}, исключён: {IsExpelled}");
-            }
+           
 
-            public static void Sort(Participants[] array)
+            public static void Sort(Participant[] array)
             {
                 if (array == null || array.Length == 0) return;
                 for (int i = 0; i < array.Length; i++)
@@ -99,6 +97,11 @@ namespace Lab_6
                     }
                 }
 
+            }
+
+            public void Print()
+            {
+                Console.WriteLine($"имя: {name}, фамилия: {surname}, время: {TotalTime}, исключён: {IsExpelled}");
             }
         }
 
