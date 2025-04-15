@@ -10,33 +10,34 @@ namespace Lab_6
     {
         public struct Participant
         {
-            private string name;
-            private string surname;
-            private int[,] marks;
-            
+            private string _name;
+            private string _surname;
+            private int[,] _marks;
+
+            private int _c;
 
             public Participant(string name, string surname)
             {
-                this.name = name;
-                this.surname = surname;
-                this.marks = new int[2, 5];
-
+                _name = name;
+                _surname = surname;
+                _marks = new int[2, 5];
+                _c = 0;
             }
 
 
-            public string Name => name;
-            public string Surname => surname;
+            public string Name => _name;
+            public string Surname => _surname;
             public int[,] Marks
             {
                 get
                 {
-                    if (marks == null) return null;
+                    if (_marks == null) return null;
                     int[,]newmarks = new int[2,5];
                     for(int i = 0; i < 2; i ++)
                     {
                         for(int j = 0; j < 5; j ++)
                         {
-                            newmarks[i,j] = marks[i,j];
+                            newmarks[i,j] = _marks[i,j];
                         }
                     }
 
@@ -48,13 +49,13 @@ namespace Lab_6
             {
                 get
                 {
-                    if (marks == null) return 0;
+                    if (_marks == null) return 0;
                     int total = 0;
                     for (int i = 0; i < 2; i++)
                     {
                         for (int j = 0; j < 5; j++)
                         {
-                            total += marks[i, j];
+                            total += _marks[i, j];
                         }
                     }
                     return total;
@@ -63,22 +64,14 @@ namespace Lab_6
 
             public void Jump(int[] result)
             {
-                if (marks == null || result == null || result.Length == 0 || marks.GetLength(0) == 0) return;
+                if (_c > 1 || _marks == null || result == null || result.Length == 0 || _marks.GetLength(0) == 0) return;
                 
-                for (int i = 0; i < 2; i++)
-                { 
-                    
-                    if (marks[i, 0] == 0)
-                    {
-                        for (int j = 0; j < 5; j++)
-                        {
-                            marks[i, j] = result[j];
-                        }
-                        return;
-                    }
+                for (int i = 0; i < 5; i++)
+                {
+                    _marks[_c, i] = result[i];
                    
                 }
-               
+                _c++;
             }
 
 
@@ -86,8 +79,8 @@ namespace Lab_6
 
             public static void Sort(Participant[] array)
             {
-                if (array == null) return;
-                if(array.Length == 0) return;
+                if (array == null || array.Length == 0) return;
+                
 
                 Array.Sort(array, (x, y) => y.TotalScore.CompareTo(x.TotalScore));
             }

@@ -10,64 +10,80 @@ namespace Lab_6
     {
         public struct Team
         {
-            private string name;
-            private int[] scores;
+            private string _name;
+            private int[] _scores;
 
-            public string Name => name;
-            public int[] Scores { get { if (scores == null) return null; return scores; } }
-            public int TotalScore => SumTotalScore();
+            public string Name => _name;
+            public int[] Scores 
+            { 
+                get
+                { 
+                    if (_scores == null) return null;
+                    int[] newscores = new int[_scores.Length];
+                    for(int i = 0;i < _scores.Length; i ++)
+                    {
+                        newscores[i] = _scores[i];
+                    }
+                    return newscores;
+                } 
+            }
+            public int TotalScore
+            {
+                get
+                {
+                    if (_scores == null) return 0;
+                    int total = 0;
+                    foreach (var score in _scores)
+                    {
+                        total += score;
+                    }
+                    return total;
+                }
+            }
+           
 
             public Team(string name)
             {
-                this.name = name;
-                scores = new int[0]; 
+                _name = name;
+                _scores = new int[0]; 
             }
 
-            private int SumTotalScore()
-            {
-                if (scores == null) return 0;
-                int total = 0;
-                foreach (var score in scores)
-                {
-                    total += score;
-                }
-                return total;
-            }
+           
 
             public void PlayMatch(int result)
             {
-                if (scores == null) return;
-                int[] s = new int[scores.Length +1];
+                if (_scores == null) return;
+                int[] s = new int[_scores.Length +1];
 
                 for(int i = 0; i < s.Length -1; i ++)
                 {
-                    s[i] = scores[i];
+                    s[i] = _scores[i];
                 }
 
 
                 s[s.Length - 1] = result;
-                scores = s;
+                _scores = s;
 
             }
 
             public void Print()
             {
-                Console.WriteLine($"команда: {name}, финальный счёт: {TotalScore}");
+                Console.WriteLine($"команда: {_name}, финальный счёт: {TotalScore}");
             }
         }
 
         public struct Group
         {
-            private string name;
+            private string _name;
             private Team[] _teams;
             private int teamcount;
 
-            public string Name => name;
+            public string Name => _name;
             public Team[] Teams => _teams;
 
             public Group(string name)
             {
-                this.name = name;
+                _name = name;
                 _teams = new Team[12]; // максимально команд
                 teamcount = 0;
 
@@ -75,14 +91,11 @@ namespace Lab_6
 
             public void Add(Team team)
             {
-                if(_teams == null) return;
+                if(_teams == null || teamcount >= _teams.Length) return;
 
-                if (teamcount < 12)
-                {
-                    _teams[teamcount] = team;
-                    teamcount++;
-                }
-                
+                _teams[teamcount] = team;
+                teamcount++;
+
             }
 
             public void Add(Team[] newTeams)
@@ -122,18 +135,28 @@ namespace Lab_6
                 int i = 0, j = 0;
 
                 
-                while (i < l || j < l)
+                while (i < l && j < l)
                 {
-                    if (i < l && (j >= l || group1.Teams[i].TotalScore >= group2.Teams[j].TotalScore))
+                    if (group1.Teams[i].TotalScore >= group2.Teams[j].TotalScore)
                     {
                         finalists.Add(group1.Teams[i]);
                         i++;
                     }
-                    else if (j < l)
+                    else 
                     {
                         finalists.Add(group2.Teams[j]);
                         j++;
                     }
+                }
+                while(i < l)
+                {
+                    finalists.Add(group1.Teams[i]);
+                    i++;
+                }
+                while (j < l)
+                {
+                    finalists.Add(group2.Teams[j]);
+                    j++;
                 }
 
                 return finalists;
@@ -141,7 +164,7 @@ namespace Lab_6
 
             public void Print()
             {
-                Console.WriteLine($"группа: {name}");
+                Console.WriteLine($"группа: {_name}");
                 for (int i = 0; i < teamcount; i++)
                 {
                     _teams[i].Print();

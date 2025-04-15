@@ -11,24 +11,24 @@ namespace Lab_6
     {
         public struct Participant
         {
-            private string name;
-            private string surname;
-            private int[] penaltyTimes;
+            private string _name;
+            private string _surname;
+            private int[] _penaltyTimes;
 
 
-            public string Name => name;
-            public string Surname => surname;
+            public string Name => _name;
+            public string Surname => _surname;
             public int[] PenaltyTimes
             {
                 get
                 {
-                    if (penaltyTimes == null || penaltyTimes.Length == 0) return null;
+                    if (_penaltyTimes == null || _penaltyTimes.Length == 0) return null;
 
-                    int[] newone = new int[penaltyTimes.Length];
+                    int[] newone = new int[_penaltyTimes.Length];
                    
-                    for(int i = 0; i < penaltyTimes.Length; i++)
+                    for(int i = 0; i < _penaltyTimes.Length; i++)
                     {
-                        newone[i] = penaltyTimes[i];
+                        newone[i] = _penaltyTimes[i];
                     }
                     return newone;
                 }
@@ -38,9 +38,9 @@ namespace Lab_6
                 get
                 {
                     
-                    if (penaltyTimes == null || penaltyTimes.Length == 0) return 0;
+                    if (_penaltyTimes == null || _penaltyTimes.Length == 0) return 0;
                     int total = 0;
-                    foreach (var time in penaltyTimes)
+                    foreach (var time in _penaltyTimes)
                     {
                         total += time;
                     }
@@ -52,10 +52,10 @@ namespace Lab_6
             {
                 get
                 {
-                    if(penaltyTimes == null || penaltyTimes.Length == 0) return false;
-                    for(int i = 0; i < penaltyTimes.Length; i++)
+                    
+                    for(int i = 0; i < _penaltyTimes.Length; i++)
                     {
-                        if (penaltyTimes[i] == 10) return true;
+                        if (_penaltyTimes[i] == 10) return true;
                     }
                     return false;
                 }
@@ -63,22 +63,22 @@ namespace Lab_6
 
             public Participant(string name, string surname)
             {
-                this.name = name;
-                this.surname = surname;
-                penaltyTimes = new int[0]; 
+                _name = name;
+                _surname = surname;
+                _penaltyTimes = new int[0]; 
                 
             }
 
             public void PlayMatch(int time)
             {
-                if (penaltyTimes == null || penaltyTimes.Length == 0) return;
-                int[] pepenalties = new int[penaltyTimes.Length + 1];
+                if (_penaltyTimes == null) return;
+                int[] pepenalties = new int[_penaltyTimes.Length + 1];
                 for(int i = 0; i < pepenalties.Length -1;i++)
                 {
-                    pepenalties[i] = penaltyTimes[i];
+                    pepenalties[i] = _penaltyTimes[i];
                 }
                 pepenalties[pepenalties.Length - 1] = time;
-                penaltyTimes = pepenalties;
+                _penaltyTimes = pepenalties;
             }
 
            
@@ -101,7 +101,7 @@ namespace Lab_6
 
             public void Print()
             {
-                Console.WriteLine($"имя: {name}, фамилия: {surname}, время: {TotalTime}, исключён: {IsExpelled}");
+                Console.WriteLine($"имя: {_name}, фамилия: {_surname}, время: {TotalTime}, исключён: {IsExpelled}");
             }
         }
 
