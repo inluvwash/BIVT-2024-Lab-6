@@ -22,7 +22,7 @@ namespace Lab_6
             {
                 get
                 {
-                    if (_penaltyTimes == null || _penaltyTimes.Length == 0) return null;
+                    if (_penaltyTimes == null) return null;
 
                     int[] newone = new int[_penaltyTimes.Length];
                    
